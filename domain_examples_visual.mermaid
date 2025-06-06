@@ -1,0 +1,33 @@
+flowchart TD
+    subgraph "🎬 영화 도메인"
+        A1["🎭 사용자 질문<br/>'2020년 이후 봉준호 감독의<br/>평점 8점 이상 영화는?'"]
+        A2["🧠 LLM 분석<br/>year > 2020<br/>director == '봉준호'<br/>rating >= 8.0"]
+        A3["✅ 결과<br/>기생충 (2019, 8.6)<br/>- 조건 미충족으로 제외<br/>새 영화 발견 시 표시"]
+        A1 --> A2 --> A3
+    end
+    
+    subgraph "🛒 쇼핑 도메인"  
+        B1["🛍️ 사용자 질문<br/>'10만원 이하 삼성 무선이어폰<br/>중 평점 4점 이상인 제품은?'"]
+        B2["🧠 LLM 분석<br/>price <= 100000<br/>brand == '삼성'<br/>category == '무선이어폰'<br/>rating >= 4.0"]
+        B3["✅ 결과<br/>갤럭시 버즈2 (89,000원, 4.2점)<br/>갤럭시 버즈 프로 (99,000원, 4.5점)"]
+        B1 --> B2 --> B3
+    end
+    
+    subgraph "🏠 부동산 도메인"
+        C1["🏡 사용자 질문<br/>'강남구 5억 이하 아파트 중<br/>지하철 10분 거리는?'"]
+        C2["🧠 LLM 분석<br/>location == '강남구'<br/>price <= 500000000<br/>property_type == '아파트'<br/>subway_distance <= 10"]
+        C3["✅ 결과<br/>역삼동 래미안 (4.8억, 지하철 5분)<br/>논현동 아크로비스타 (4.9억, 지하철 8분)"]
+        C1 --> C2 --> C3
+    end
+    
+    subgraph "📚 채용 도메인"
+        D1["💼 사용자 질문<br/>'5년 이상 경력의 서울 근무<br/>백엔드 개발자는?'"]
+        D2["🧠 LLM 분석<br/>experience >= 5<br/>location == '서울'<br/>position == '백엔드개발자'"]
+        D3["✅ 결과<br/>김개발 (7년, Node.js 전문)<br/>이백엔드 (6년, Python/Django)"]
+        D1 --> D2 --> D3
+    end
+    
+    style A3 fill:#e3f2fd
+    style B3 fill:#e8f5e8  
+    style C3 fill:#fff3e0
+    style D3 fill:#f3e5f5
