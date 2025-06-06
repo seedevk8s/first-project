@@ -1,0 +1,53 @@
+flowchart TD
+    A[요구사항 분석] --> B[도메인 이해]
+    B --> C[메타데이터 스키마 설계]
+    
+    C --> D{메타데이터 타입 분류}
+    D --> E[문자열 필드<br/>title, director, genre]
+    D --> F[숫자 필드<br/>year, rating, price]
+    D --> G[불린 필드<br/>available, featured]
+    D --> H[배열 필드<br/>genres, tags, authors]
+    D --> I[날짜 필드<br/>release_date, created_at]
+    
+    E --> J[인덱스 전략 수립]
+    F --> J
+    G --> J
+    H --> J
+    I --> J
+    
+    J --> K{검색 패턴 분석}
+    K --> L[범위 검색<br/>year > 2020, price < 1000]
+    K --> M[정확 매칭<br/>director == 봉준호]
+    K --> N[포함 검색<br/>genre contains 액션]
+    K --> O[복합 조건<br/>AND, OR 조합]
+    
+    L --> P[Qdrant 인덱스 최적화]
+    M --> P
+    N --> P
+    O --> P
+    
+    P --> Q[VectorStoreInfo 정의]
+    Q --> R[MetadataInfo 구성]
+    R --> S[필드 검증 규칙]
+    
+    S --> T[환경 구축]
+    T --> U[데이터 준비]
+    U --> V[벡터 인덱스 생성]
+    V --> W[메타데이터 인덱스 생성]
+    
+    W --> X[AutoRetriever 설정]
+    X --> Y[프롬프트 최적화]
+    Y --> Z[필터링 성능 테스트]
+    
+    Z --> AA{성능 만족?}
+    AA -->|아니오| BB[메타데이터 스키마 수정]
+    BB --> C
+    AA -->|예| CC[QueryEngine 구성]
+    CC --> DD[복합 쿼리 테스트]
+    DD --> EE[프로덕션 배포]
+    
+    style C fill:#ffecb3
+    style J fill:#e8f5e8
+    style P fill:#e3f2fd
+    style Q fill:#f3e5f5
+    style BB fill:#ffcdd2
