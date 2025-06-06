@@ -1,0 +1,62 @@
+graph TB
+    %% 사용자 쿼리 시작점
+    Query[("🔍 Query<br/>사용자 질문")] 
+    
+    %% Before 단계 - 쿼리 전처리
+    Before{{"⚙️ Before<br/>전처리"}}
+    
+    %% LLM을 통한 쿼리 분석 및 변환
+    LLM[("🤖 LLM<br/>언어모델")]
+    
+    %% 변환된 쿼리들
+    TransQuery["📝 Transformed Query<br/>변환된 쿼리"]
+    Filter["🏷️ Filter<br/>필터 조건"]
+    
+    %% 검색 엔진들
+    VectorEngine["🔍 Vector Engine<br/>벡터 검색"]
+    Synthesizer["⚡ Synthesizer<br/>통합 엔진"]
+    
+    %% 후처리 및 재순위
+    PostProcess{{"🔄 Post Process<br/>후처리"}}
+    Reranking["📊 Re-ranking<br/>재순위화"]
+    
+    %% 최종 프롬프트 생성
+    Prompt[("💬 Prompt<br/>최종 프롬프트")]
+    
+    %% 연결 관계
+    Query --> Before
+    Before --> LLM
+    
+    %% LLM에서 여러 출력으로 분기
+    LLM --> TransQuery
+    LLM --> Filter
+    
+    %% 병렬 검색 수행
+    TransQuery --> VectorEngine
+    Filter --> VectorEngine
+    
+    %% 검색 결과 통합
+    VectorEngine --> Synthesizer
+    
+    %% 후처리 과정
+    Synthesizer --> PostProcess
+    PostProcess --> Reranking
+    
+    %% 최종 프롬프트로
+    Reranking --> Prompt
+    
+    %% 피드백 루프 (LLM으로 다시)
+    Prompt -.-> LLM
+    
+    %% 스타일링
+    classDef queryStyle fill:#ff6b6b,stroke:#d63031,stroke-width:3px,color:#fff
+    classDef llmStyle fill:#4ecdc4,stroke:#00b894,stroke-width:3px,color:#fff
+    classDef processStyle fill:#667eea,stroke:#5f3dc4,stroke-width:2px,color:#fff
+    classDef engineStyle fill:#f093fb,stroke:#e84393,stroke-width:2px,color:#fff
+    classDef outputStyle fill:#ffeaa7,stroke:#fdcb6e,stroke-width:2px,color:#2d3436
+    
+    class Query queryStyle
+    class LLM llmStyle
+    class Before,PostProcess processStyle
+    class VectorEngine,Synthesizer engineStyle
+    class TransQuery,Filter,Reranking,Prompt outputStyle
