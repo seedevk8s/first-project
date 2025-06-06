@@ -1,0 +1,48 @@
+flowchart TD
+    A[📦 라이브러리 설치<br/>LlamaIndex + Qdrant + datasets] --> B[⚙️ LlamaIndex 글로벌 설정<br/>GPT-4o-mini + OpenAI 임베딩]
+    
+    B --> C[🔧 데이터 소스 준비]
+    
+    C --> D[📝 간단 예시 문서<br/>5개 AI 기술 설명]
+    C --> E[🌐 위키피디아 데이터<br/>한국어 10개 문서]
+    C --> F[📚 학사 정책 문서<br/>MD 파일들]
+    
+    D --> G[🗄️ ai_tech 컬렉션<br/>VectorStoreIndex 생성]
+    E --> H[🗄️ wiki 컬렉션<br/>VectorStoreIndex 생성]
+    F --> I[🗄️ academic_policies 컬렉션<br/>VectorStoreIndex 생성]
+    
+    G --> J[📊 자동 청킹<br/>chunk_size=500, overlap=100/50]
+    H --> J
+    I --> J
+    
+    J --> K[🤖 OpenAI 임베딩 생성<br/>text-embedding-3-small]
+    K --> L[💾 Qdrant 저장<br/>벡터 + 메타데이터]
+    
+    L --> M[❓ 자연어 질의<br/>'휴학은 최대 몇 학기까지 가능한가요?']
+    M --> N[🔍 Query Engine<br/>similarity_top_k=5]
+    N --> O[📋 벡터 검색 + LLM 답변<br/>'휴학은 최대 6학기까지 가능합니다']
+    
+    M --> P[🔍 Retriever<br/>근거 문서 확인]
+    P --> Q[📄 원문 청크 5개<br/>답변 근거 제시]
+    
+    subgraph "🏗️ 다중 컬렉션 구성"
+        G
+        H
+        I
+    end
+    
+    subgraph "🎯 RAG 파이프라인"
+        N
+        O
+    end
+    
+    subgraph "📚 투명성 확보"
+        P
+        Q
+    end
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style M fill:#fff3e0
+    style O fill:#e8f5e8
+    style Q fill:#fff9c4
