@@ -1,0 +1,29 @@
+graph TD
+    A["원본 데이터<br/>PDF, 웹페이지, DB"] --> B["문서 청킹<br/>고정크기/문장단위"]
+    B --> C["임베딩 생성<br/>텍스트 → 벡터"]
+    C --> D["Qdrant<br/>벡터 데이터베이스"]
+    
+    E["사용자 질문"] --> F["질문 임베딩"]
+    F --> G["벡터 유사도 검색<br/>Top-K 검색"]
+    D --> G
+    
+    G --> H["LlamaIndex<br/>청크 조합 & 컨텍스트 구성"]
+    H --> I["LLM<br/>GPT, Claude 등"]
+    I --> J["최종 답변"]
+    
+    G --> K["검색 성능 평가"]
+    K --> L["Recall@5<br/>재현율"]
+    K --> M["Precision@5<br/>정밀도"] 
+    K --> N["MRR@5<br/>평균 역순위"]
+    
+    classDef source fill:#e3f2fd
+    classDef process fill:#f3e5f5
+    classDef storage fill:#e8f5e8
+    classDef llm fill:#fff3e0
+    classDef eval fill:#fce4ec
+    
+    class A source
+    class B,C,F,H process
+    class D storage
+    class I,J llm
+    class K,L,M,N eval
