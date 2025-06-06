@@ -1,0 +1,84 @@
+graph TB
+    %% 사용자 쿼리 시작점
+    Query[("🔍 사용자 쿼리<br/>'2023년 AI 관련 논문 찾아줘'")]
+    
+    %% Before 단계 - 쿼리 전처리
+    Before{{"⚙️ 전처리 단계<br/>• 쿼리 정규화<br/>• 언어 감지<br/>• 의도 파악"}}
+    
+    %% LLM을 통한 쿼리 분석 및 변환
+    LLM[("🤖 LLM 분석기<br/>• 자연어 → 구조화<br/>• 검색 전략 결정<br/>• 필터 조건 추출")]
+    
+    %% 변환된 쿼리들
+    TransQuery["📝 변환된 검색 쿼리<br/>'artificial intelligence research'<br/>'machine learning papers'<br/>'deep learning studies'"]
+    Filter["🏷️ 메타데이터 필터<br/>• 년도: 2023<br/>• 타입: academic paper<br/>• 주제: AI, ML"]
+    
+    %% 벡터 스토어 및 검색
+    VectorStore[("📊 벡터 저장소<br/>• 임베딩 데이터베이스<br/>• 의미적 유사도 계산<br/>• Top-K 검색")]
+    
+    %% 검색 엔진들
+    VectorEngine["🔍 벡터 검색 엔진<br/>• 코사인 유사도<br/>• 임베딩 매칭<br/>• 관련 문서 추출"]
+    
+    MetadataEngine["🏷️ 메타데이터 엔진<br/>• 구조화된 필터링<br/>• 조건부 검색<br/>• 정확한 매칭"]
+    
+    %% 결과 통합
+    Synthesizer["⚡ 결과 통합기<br/>• 다중 소스 결합<br/>• 중복 제거<br/>• 점수 정규화"]
+    
+    %% 후처리 및 재순위
+    PostProcess{{"🔄 후처리 단계<br/>• 관련성 검증<br/>• 품질 평가<br/>• 컨텍스트 확인"}}
+    
+    Reranking["📊 재순위화<br/>• Cross-encoder 사용<br/>• 관련성 재평가<br/>• 최종 순위 결정"]
+    
+    %% 컨텍스트 구성
+    ContextBuilder["📋 컨텍스트 구성기<br/>• 선택된 문서 정리<br/>• 토큰 수 최적화<br/>• 순서 배치"]
+    
+    %% 최종 프롬프트 생성
+    Prompt[("💬 최종 프롬프트<br/>시스템: 다음 문서들을 참고하여...<br/>컨텍스트: [관련 문서들]<br/>사용자: 2023년 AI 관련 논문 찾아줘")]
+    
+    %% 연결 관계 및 설명
+    Query -->|"원시 자연어 입력"| Before
+    Before -->|"정제된 쿼리"| LLM
+    
+    %% LLM에서 여러 출력으로 분기
+    LLM -->|"의미적 검색용"| TransQuery
+    LLM -->|"구조적 필터링용"| Filter
+    
+    %% 병렬 검색 수행
+    TransQuery -->|"임베딩 검색"| VectorEngine
+    Filter -->|"조건부 검색"| MetadataEngine
+    
+    %% 벡터 저장소 연결
+    VectorEngine <-->|"임베딩 쿼리"| VectorStore
+    
+    %% 검색 결과 통합
+    VectorEngine -->|"의미적 유사 문서"| Synthesizer
+    MetadataEngine -->|"조건 만족 문서"| Synthesizer
+    
+    %% 후처리 과정
+    Synthesizer -->|"통합된 결과셋"| PostProcess
+    PostProcess -->|"검증된 결과"| Reranking
+    
+    %% 컨텍스트 구성
+    Reranking -->|"최종 선별 문서"| ContextBuilder
+    
+    %% 최종 프롬프트로
+    ContextBuilder -->|"구조화된 컨텍스트"| Prompt
+    
+    %% 피드백 루프 (LLM으로 다시)
+    Prompt -.->|"성능 피드백"| LLM
+    
+    %% 스타일링
+    classDef queryStyle fill:#ff6b6b,stroke:#d63031,stroke-width:3px,color:#fff
+    classDef llmStyle fill:#4ecdc4,stroke:#00b894,stroke-width:3px,color:#fff
+    classDef processStyle fill:#667eea,stroke:#5f3dc4,stroke-width:2px,color:#fff
+    classDef engineStyle fill:#f093fb,stroke:#e84393,stroke-width:2px,color:#fff
+    classDef outputStyle fill:#ffeaa7,stroke:#fdcb6e,stroke-width:2px,color:#2d3436
+    classDef storageStyle fill:#a8e6cf,stroke:#56c596,stroke-width:2px,color:#2d3436
+    classDef contextStyle fill:#dda0dd,stroke:#ba68c8,stroke-width:2px,color:#fff
+    
+    class Query,Prompt queryStyle
+    class LLM llmStyle
+    class Before,PostProcess processStyle
+    class VectorEngine,MetadataEngine,Synthesizer engineStyle
+    class TransQuery,Filter,Reranking outputStyle
+    class VectorStore storageStyle
+    class ContextBuilder contextStyle
