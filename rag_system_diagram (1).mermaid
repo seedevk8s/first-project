@@ -1,0 +1,30 @@
+flowchart TD
+    A[원본 데이터<br/>PDF, 웹페이지, 데이터베이스] --> B[문서 청킹]
+    B --> B1[청킹 방법<br/>고정크기/문장단위/의미적]
+    B1 --> C[임베딩 생성<br/>텍스트를 벡터로 변환]
+    C --> D[(Qdrant<br/>벡터 데이터베이스)]
+    
+    E[사용자 질문] --> F[질문 임베딩]
+    F --> G[벡터 유사도 검색]
+    D --> G
+    
+    G --> H[LlamaIndex<br/>검색된 청크 조합]
+    H --> I[LLM<br/>답변 생성]
+    I --> J[최종 답변]
+    
+    G --> K[검색 성능 평가]
+    K --> K1[Recall@5<br/>재현율]
+    K --> K2[Precision@5<br/>정밀도]
+    K --> K3[MRR@5<br/>평균 역순위]
+    
+    classDef dataSource fill:#e1f5fe
+    classDef processing fill:#f3e5f5
+    classDef storage fill:#e8f5e8
+    classDef llm fill:#fff3e0
+    classDef evaluation fill:#fce4ec
+    
+    class A dataSource
+    class B,B1,C,F,H processing
+    class D storage
+    class I,J llm
+    class K,K1,K2,K3 evaluation
