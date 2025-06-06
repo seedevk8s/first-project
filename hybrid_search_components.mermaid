@@ -1,0 +1,44 @@
+graph TD
+    subgraph DataPrep[데이터 준비]
+        A1[영화 데이터<br/>제목과 줄거리] --> A2[벡터화]
+        A2 --> A3[Qdrant DB 저장]
+        A1 --> A4[TextNode 변환]
+        A4 --> A5[BM25 인덱스 구축]
+    end
+    
+    subgraph SearchExec[검색 실행]
+        B1[사용자 질의<br/>좀비 영화] --> B2{하이브리드 검색기}
+        
+        B2 --> C1[Dense Retriever]
+        B2 --> D1[BM25 Retriever]
+        
+        C1 --> C2[질의 임베딩]
+        C2 --> C3[벡터 유사도 검색]
+        C3 --> C4[의미적 유사성 기반<br/>Top 3]
+        
+        D1 --> D2[키워드 분석]
+        D2 --> D3[TF-IDF 점수 계산]
+        D3 --> D4[키워드 매칭 기반<br/>Top 3]
+        
+        C4 --> E1[결과 융합]
+        D4 --> E1
+        E1 --> E2[통합 랭킹]
+        E2 --> E3[최종 결과]
+    end
+    
+    subgraph Comparison[특징 비교]
+        F1[Dense 검색<br/>장점: 의미 이해<br/>장점: 동의어 처리<br/>단점: 계산 비용 높음]
+        F2[BM25 검색<br/>장점: 정확한 키워드 매칭<br/>장점: 빠른 속도<br/>단점: 의미 이해 부족]
+        F3[하이브리드<br/>장점: 두 방법의 장점 결합<br/>장점: 더 정확한 결과<br/>장점: 포괄적 검색]
+    end
+    
+    A3 --> C3
+    A5 --> D3
+    
+    style B1 fill:#e3f2fd
+    style B2 fill:#fff3e0
+    style C1 fill:#f3e5f5
+    style D1 fill:#e8f5e8
+    style E1 fill:#fce4ec
+    style E3 fill:#e0f2f1
+    style F3 fill:#fff8e1
