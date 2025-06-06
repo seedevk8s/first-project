@@ -1,0 +1,43 @@
+flowchart TD
+    A[📊 CSV 데이터 로드<br/>20개 뉴스 항목] --> B[🔤 텍스트 추출]
+    B --> C[🤖 OpenAI 임베딩<br/>text-embedding-3-small]
+    B --> D[🔍 TF-IDF 벡터화<br/>scikit-learn]
+    
+    C --> E[📏 Dense 벡터<br/>1536차원]
+    D --> F[🎯 Sparse 벡터<br/>104차원]
+    
+    E --> G[🗄️ Qdrant 컬렉션 생성]
+    F --> G
+    
+    G --> H[📝 포인트 구조 정의<br/>ID + Dense + Sparse + Payload]
+    H --> I[⬆️ 데이터 업서트<br/>20개 포인트]
+    
+    I --> J[❓ 검색 쿼리<br/>'소비자 정책 발표']
+    J --> K[🤖 쿼리 임베딩<br/>OpenAI API]
+    K --> L[🔍 벡터 유사도 검색<br/>코사인 유사도]
+    
+    L --> M[📋 검색 결과<br/>Top 3 결과]
+    
+    subgraph "🏗️ 벡터 구성"
+        E
+        F
+    end
+    
+    subgraph "🎯 검색 엔진"
+        G
+        H
+        I
+    end
+    
+    subgraph "🔍 검색 프로세스"
+        J
+        K
+        L
+        M
+    end
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style D fill:#f3e5f5
+    style G fill:#e8f5e8
+    style M fill:#fff3e0
