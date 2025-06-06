@@ -1,0 +1,43 @@
+flowchart TD
+    A[패키지 설치<br/>LlamaIndex & Qdrant] --> B[환경변수 로드<br/>API 키 설정]
+    B --> C[Qdrant 클라이언트 설정]
+    C --> D[영화 데이터 준비<br/>TextNode 10개 생성]
+    
+    D --> E[메타데이터 구조 정의<br/>title, year, genre, director, rating]
+    E --> F[LLM 모델 설정<br/>GPT-4o-mini & embedding]
+    F --> G[벡터 인덱스 생성<br/>Qdrant movies 컬렉션]
+    
+    G --> H[기본 검색 테스트<br/>단순 유사도 검색]
+    H --> I{검색 결과 정확?<br/>봉준호 감독 조건}
+    I -->|부정확| J[기본 QueryEngine 테스트<br/>LLM 응답 확인]
+    
+    J --> K[VectorStoreInfo 정의<br/>메타데이터 스키마 명시]
+    K --> L[MetadataInfo 구성<br/>각 필드별 타입과 설명]
+    L --> M[AutoRetriever 생성<br/>자동 필터링 기능]
+    
+    M --> N[Qdrant 메타데이터 인덱스<br/>director, year, genre, rating, title]
+    N --> O[필터링 테스트 1<br/>2018년 이전 봉준호 감독]
+    O --> P[필터링 테스트 2<br/>2020년 이전 봉준호 감독]
+    P --> Q[필터링 테스트 3<br/>박찬욱 감독 멜로 장르]
+    
+    Q --> R{장르 인식 문제?<br/>액션 영화 키워드}
+    R -->|문제 발생| S[프롬프트 분석<br/>AutoRetriever 내부 확인]
+    S --> T[커스텀 프롬프트 작성<br/>장르 키워드 처리 개선]
+    T --> U[PromptTemplate 생성<br/>custom_instructions 추가]
+    U --> V[AutoRetriever 업데이트<br/>개선된 프롬프트 적용]
+    
+    V --> W[QueryEngine 구성<br/>AutoRetriever + ResponseSynthesizer]
+    W --> X[복합 질문 테스트<br/>평균 평점 계산]
+    X --> Y[목록 질문 테스트<br/>연상호 감독 공포 영화]
+    Y --> Z[데이터 없음 테스트<br/>이병헌 감독 코미디]
+    Z --> AA[추론 질문 테스트<br/>영화 제작 주기 분석]
+    
+    AA --> BB[완성된 RAG 시스템<br/>메타데이터 필터링 구현]
+    
+    style D fill:#e1f5fe
+    style E fill:#fff3e0
+    style K fill:#fff3e0
+    style L fill:#fff3e0
+    style N fill:#f3e5f5
+    style T fill:#ffecb3
+    style BB fill:#e8f5e8
